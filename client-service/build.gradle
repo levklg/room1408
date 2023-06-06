@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+version 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '3.0.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '3.0.0'
+    implementation group: 'org.webjars', name: 'webjars-locator-core', version: '0.52'
+    implementation group: 'org.webjars', name: 'sockjs-client', version: '1.5.1'
+    implementation group: 'org.webjars', name: 'stomp-websocket', version: '2.3.4'
+    implementation group: 'org.webjars', name: 'bootstrap', version: '5.2.3'
+
+
+
+}
+
+test {
+    useJUnitPlatform()
+}
