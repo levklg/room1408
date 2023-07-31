@@ -41,7 +41,7 @@ public class DataStoreR2dbc implements DataStore {
     public Flux<Message> loadAllMessages() {
         log.info("loadAllMessages");
         return messageRepository.findAllMessages()
-                .delayElements(Duration.of(3, SECONDS), workerPool);
+                .delayElements(Duration.of(1, SECONDS), workerPool);
     }
 
 }

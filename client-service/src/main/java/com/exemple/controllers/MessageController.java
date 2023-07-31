@@ -43,7 +43,7 @@ public class MessageController {
             template.convertAndSend(String.format("%s%s", TOPIC_TEMPLATE, roomId),
                     new Message(HtmlUtils.htmlEscape(message.messageStr())));
 
-            // Здесь  отправляем сообщение в комнату 1408
+            // Здесь отправляем сообщение в комнату 1408
             template.convertAndSend(String.format("%s1408", TOPIC_TEMPLATE),
                     new Message(HtmlUtils.htmlEscape(message.messageStr())));
         }
