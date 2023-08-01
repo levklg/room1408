@@ -36,7 +36,7 @@ public class MessageController {
     public void getMessage(@DestinationVariable String roomId, Message message) {
         logger.info("get message:{}, roomId:{}", message, roomId);
 
-        if (roomId.equals("1408")) {
+        if (roomId.equals(ROOM_ID_1408)) {
             logger.warn("Message sending to room 1408 is not allowed");
         } else {
             saveMessage(roomId, message)
