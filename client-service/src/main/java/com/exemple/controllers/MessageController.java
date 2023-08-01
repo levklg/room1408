@@ -24,6 +24,8 @@ public class MessageController {
     private static final String TOPIC_TEMPLATE = "/topic/response.";
     private final WebClient datastoreClient;
     private final SimpMessagingTemplate template;
+    private static final String ROOM_ID_1408 = "1408";
+
 
     public MessageController(WebClient datastoreClient, SimpMessagingTemplate template) {
         this.datastoreClient = datastoreClient;
@@ -49,6 +51,7 @@ public class MessageController {
         }
     }
 
+
     @EventListener
     public void handleSessionSubscribeEvent(SessionSubscribeEvent event) {
         var genericMessage = (GenericMessage<byte[]>) event.getMessage();
@@ -59,8 +62,9 @@ public class MessageController {
         }
         var roomId = parseRoomId(simpDestination);
 
-        if (roomId.equals("1408")) {
-            getAllRoomIds().flatMap(this::getMessagesByRoomId)
+
+        if (roomId.equals(ROOM_ID_1408)) {
+            getAllMessagesFromAllRooms()
                     .doOnError(ex -> logger.error("Getting messages for all rooms failed", ex))
                     .subscribe(message -> template.convertAndSend(simpDestination, message));
         } else {
@@ -101,4 +105,16 @@ public class MessageController {
                 .retrieve()
                 .bodyToFlux(String.class);
     }
+    private Flux<Message> getAllMessagesFromAllRooms() {
+        return datastoreClient.get().uri("/msg/all")
+                .accept(MediaType.APPLICATION_NDJSON)
+                .exchangeToFlux(response -> {
+                    if (response.statusCode().equals(HttpStatus.OK)) {
+                        return response.bodyToFlux(Message.class);
+                    } else {
+                        return response.createException().flatMapMany(Mono::error);
+                    }
+                });
+    }
+
 }
